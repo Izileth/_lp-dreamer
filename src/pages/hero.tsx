@@ -140,7 +140,7 @@ export default function DreamerHero() {
                     <div className="flex flex-col justify-end p-6 lg:pl-10 lg:pb-10 relative z-10 order-2 lg:order-1">
                         <div className="flex flex-col">
                             {"DREAMER".split("").map((letter, i) => (
-                                <span key={i} className="dreamer-letter" ref={el => lettersRef.current[i] = el}>
+                                <span key={i} className="dreamer-letter" ref={el => { lettersRef.current[i] = el }}>
                                     {letter}
                                 </span>
                             ))}

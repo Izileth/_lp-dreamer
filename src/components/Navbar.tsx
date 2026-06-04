@@ -127,7 +127,7 @@ export default function Navbar() {
                 <div className="flex flex-col items-center gap-2">
                     <Link to="/" className="nav-link text-sm lg:text-base font-black tracking-[0.3em]">DREAMERS</Link>
                     <div className="hidden lg:flex gap-6">
-                        <span className="nav-link text-[10px]">INDEX</span>
+                        <Link to="/projects" className="nav-link text-[10px]">PROJECTS</Link>
                         <Link to="/artists" className="nav-link text-[10px]">ARTISTS</Link>
                     </div>
                 </div>

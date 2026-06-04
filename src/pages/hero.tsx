@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import gsap from "gsap";
 
 const SLIDES = [
     { id: 1, label: "01" },
@@ -40,10 +42,42 @@ const THUMBNAILS = [
 export default function DreamerHero() {
     const [activeSlide, setActiveSlide] = useState(0);
     const [menuOpen, setMenuOpen] = useState(false);
+    
+    const containerRef = useRef<HTMLDivElement>(null);
+    const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
+    const heroImageRef = useRef<HTMLDivElement>(null);
+    const rightColRef = useRef<HTMLDivElement>(null);
+    const navRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Initial state
+            gsap.set(lettersRef.current, { x: -100, opacity: 0 });
+            gsap.set(heroImageRef.current, { scale: 1.1, opacity: 0 });
+            gsap.set(rightColRef.current, { x: 50, opacity: 0 });
+            gsap.set(navRef.current, { y: -20, opacity: 0 });
+
+            // Timeline
+            const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 } });
+
+            tl.to(navRef.current, { y: 0, opacity: 1 })
+              .to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 }, "-=0.5")
+              .to(heroImageRef.current, { scale: 1, opacity: 1 }, "-=0.8")
+              .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+        // Add a simple GSAP animation for the menu if needed
+    };
 
     return (
         <div
-            className="min-h-screen flex items-center justify-center"
+            ref={containerRef}
+            className="min-h-screen flex items-center justify-center overflow-hidden"
             style={{ backgroundColor: "#b5a99a", fontFamily: "'Barlow Condensed', sans-serif" }}
         >
             {/* Google Fonts Import via style tag */}
@@ -90,6 +124,7 @@ export default function DreamerHero() {
           color: #1a1a1a;
           cursor: pointer;
           transition: opacity 0.2s;
+          text-decoration: none;
         }
         .nav-link:hover { opacity: 0.5; }
 
@@ -197,12 +232,21 @@ export default function DreamerHero() {
           gap: 5px;
           cursor: pointer;
           flex-shrink: 0;
+          border: none;
+          transition: transform 0.3s ease;
+        }
+        .menu-btn:hover {
+            transform: scale(1.05);
         }
         .menu-line {
           width: 18px;
           height: 1.5px;
           background: #d4c9bc;
+          transition: all 0.3s ease;
         }
+        .menu-open .menu-line:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .menu-open .menu-line:nth-child(2) { opacity: 0; }
+        .menu-open .menu-line:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
         /* Mobile responsive overrides */
         @media (max-width: 768px) {
@@ -257,13 +301,13 @@ export default function DreamerHero() {
                     {/* ════════════════════════════════════
               TOP NAVIGATION BAR
           ════════════════════════════════════ */}
-                    <div className="flex items-start justify-between" style={{ padding: "20px 22px 0 22px" }}>
+                    <div ref={navRef} className="flex items-start justify-between" style={{ padding: "20px 22px 0 22px" }}>
 
                         {/* Left: PROJECTS + vertical SEASON 01 + big D */}
                         <div className="flex items-start" style={{ gap: "10px" }}>
                             {/* PROJECTS label */}
                             <div style={{ paddingTop: "2px" }}>
-                                <span className="nav-link">PROJECTS</span>
+                                <Link to="/projects" className="nav-link">PROJECTS</Link>
                             </div>
 
                             {/* Vertical SEASON 01 */}
@@ -274,19 +318,23 @@ export default function DreamerHero() {
 
                         {/* Center nav */}
                         <div className="flex flex-col items-center" style={{ gap: "6px", paddingTop: "2px" }}>
-                            <span className="nav-link" style={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.18em" }}>
+                            <Link to="/" className="nav-link" style={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.18em" }}>
                                 DREAMERS
-                            </span>
+                            </Link>
                             <span className="nav-link">INDEX</span>
-                            <span className="nav-link">ARTISTS</span>
+                            <Link to="/artists" className="nav-link">ARTISTS</Link>
                         </div>
 
                         {/* Right: hamburger */}
-                        <div className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+                        <button 
+                            className={`menu-btn ${menuOpen ? 'menu-open' : ''}`} 
+                            onClick={toggleMenu}
+                            aria-label="Toggle menu"
+                        >
                             <div className="menu-line" />
                             <div className="menu-line" />
                             <div className="menu-line" />
-                        </div>
+                        </button>
                     </div>
 
                     {/* ════════════════════════════════════
@@ -311,7 +359,11 @@ export default function DreamerHero() {
                             }}
                         >
                             {"DREAMER".split("").map((letter, i) => (
-                                <span key={i} className="dreamer-letter">
+                                <span 
+                                    key={i} 
+                                    className="dreamer-letter"
+                                    ref={el => lettersRef.current[i] = el}
+                                >
                                     {letter}
                                 </span>
                             ))}
@@ -332,6 +384,7 @@ export default function DreamerHero() {
 
                         {/* ── CENTER: Hero image placeholder ── */}
                         <div
+                            ref={heroImageRef}
                             className="flex-1 placeholder-img"
                             style={{
                                 position: "absolute",
@@ -368,6 +421,7 @@ export default function DreamerHero() {
 
                         {/* ── RIGHT COLUMN: Info cards ── */}
                         <div
+                            ref={rightColRef}
                             className="flex-shrink-0 flex flex-col justify-center"
                             style={{
                                 width: "clamp(180px, 24vw, 280px)",

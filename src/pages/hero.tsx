@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
+import heroImg from "../assets/hero.png";
 
 const SLIDES = [
     { id: 1, label: "01" },
@@ -123,13 +124,18 @@ export default function DreamerHero() {
                   color: #2a2a2a;
                 }
 
-                .placeholder-img {
-                  background: linear-gradient(135deg, #c5b9ac 0%, #b8ac9f 50%, #c5b9ac 100%);
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
+                .hero-image-container {
                   position: relative;
                   overflow: hidden;
+                  background: transparent;
+                }
+                
+                .hero-image-container img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  object-position: center 15%; /* Focus on the face/butterflies */
+                  filter: grayscale(0.2) contrast(1.1);
                 }
             `}</style>
 
@@ -154,15 +160,16 @@ export default function DreamerHero() {
                     {/* Center: Image */}
                     <div 
                         ref={heroImageRef}
-                        className="flex-1 min-h-[40vh] lg:absolute lg:inset-0 lg:left-[20%] lg:right-[30%] z-0 order-1 lg:order-2 placeholder-img"
+                        className="flex-1 min-h-[50vh] lg:absolute lg:inset-0 lg:left-[20%] lg:right-[30%] z-0 order-1 lg:order-2 hero-image-container"
                     >
-                        <span className="text-[10px] tracking-[0.5em] opacity-20 uppercase font-black">Hero Visual</span>
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                        <img src={heroImg} alt="Dreamer Hero" />
+                        
+                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                             {SLIDES.map((_, i) => (
                                 <div 
                                     key={i} 
                                     onClick={() => setActiveSlide(i)}
-                                    className={`h-[2px] transition-all cursor-pointer ${i === activeSlide ? 'w-8 bg-[#0d0d0d]' : 'w-4 bg-[#0d0d0d]/30'}`}
+                                    className={`h-[2px] transition-all cursor-pointer ${i === activeSlide ? 'w-8 bg-[#d4c9bc]' : 'w-4 bg-[#d4c9bc]/30'}`}
                                 />
                             ))}
                         </div>
@@ -192,8 +199,8 @@ export default function DreamerHero() {
 
                         <div className="flex gap-2 h-20">
                             {THUMBNAILS.map((t) => (
-                                <div key={t.id} className={`flex-1 placeholder-img ${t.bg} cursor-pointer hover:brightness-95 transition-all`}>
-                                    <span className="text-[8px] opacity-20 font-bold">PREVIEW</span>
+                                <div key={t.id} className={`flex-1 overflow-hidden cursor-pointer hover:brightness-95 transition-all bg-black`}>
+                                    <img src={heroImg} className="w-full h-full object-cover grayscale opacity-60" alt="thumbnail" />
                                 </div>
                             ))}
                         </div>

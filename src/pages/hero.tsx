@@ -41,7 +41,7 @@ const THUMBNAILS = [
 
 export default function DreamerHero() {
     const [activeSlide, setActiveSlide] = useState(0);
-    
+
     const containerRef = useRef<HTMLDivElement>(null);
     const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
     const heroImageRef = useRef<HTMLDivElement>(null);
@@ -57,8 +57,8 @@ export default function DreamerHero() {
             const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.6 });
 
             tl.to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 })
-              .to(heroImageRef.current, { scale: 1, opacity: 1 }, "-=0.8")
-              .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
+                .to(heroImageRef.current, { scale: 1, opacity: 1 }, "-=0.8")
+                .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
         }, containerRef);
 
         return () => ctx.revert();
@@ -106,6 +106,9 @@ export default function DreamerHero() {
                   letter-spacing: -0.02em;
                   display: block;
                   user-select: none;
+                  position: relative;
+                  z-index: 20;
+                  text-shadow: 0 0 20px rgba(212, 201, 188, 0.5);
                 }
 
                 .info-title {
@@ -128,46 +131,85 @@ export default function DreamerHero() {
                   position: relative;
                   overflow: hidden;
                   background: transparent;
+                  transition: all 0.5s ease;
                 }
                 
                 .hero-image-container img {
                   width: 100%;
                   height: 100%;
                   object-fit: cover;
-                  object-position: center 15%; /* Focus on the face/butterflies */
+                  object-position: center 15%;
                   filter: grayscale(0.2) contrast(1.1);
+                  opacity: 0.9;
+                }
+
+                @media (max-width: 1023px) {
+                    .mobile-overlay-text {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        padding: 1.5rem;
+                        z-index: 30;
+                        pointer-events: none;
+                    }
+                    .hero-image-container {
+                        min-height: 60vh;
+                        width: 100%;
+                    }
                 }
             `}</style>
 
             <div className="hero-card">
                 {/* ── MAIN CONTENT ── */}
                 <div className="flex-1 flex flex-col lg:flex-row relative lg:mt-[100px]">
+
                     {/* Left: DREAMER Text */}
-                    <div className="flex flex-col justify-end p-6 lg:pl-10 lg:pb-10 relative z-10 order-2 lg:order-1">
+                    <div
+                        className="
+        absolute top-4 left-4 z-30
+        flex flex-col
+        md:relative md:top-auto md:left-auto
+        md:justify-end
+        p-4 lg:pl-10 lg:pb-10
+        order-2 lg:order-1
+        mobile-overlay-text
+    "
+                    >
                         <div className="flex flex-col">
                             {"DREAMER".split("").map((letter, i) => (
-                                <span key={i} className="dreamer-letter" ref={el => { lettersRef.current[i] = el }}>
+                                <span
+                                    key={i}
+                                    className="dreamer-letter"
+                                    ref={el => {
+                                        lettersRef.current[i] = el;
+                                    }}
+                                >
                                     {letter}
                                 </span>
                             ))}
                         </div>
+
                         <div className="mt-6">
-                            <p className="artist-label text-[10px] opacity-60">ARTIST</p>
-                            <p className="artist-label text-xs font-bold">YUGAL ODHRANI</p>
+                            <p className="artist-label text-[10px] opacity-60">
+                                ARTIST
+                            </p>
+                            <p className="artist-label text-xs font-bold">
+                                YUGAL ODHRANI
+                            </p>
                         </div>
                     </div>
 
-                    {/* Center: Image */}
-                    <div 
+                    {/* Center: Image (Redimensionada para destaque do texto) */}
+                    <div
                         ref={heroImageRef}
-                        className="flex-1 min-h-[50vh] lg:absolute lg:inset-0 lg:left-[20%] lg:right-[30%] z-0 order-1 lg:order-2 hero-image-container"
+                        className="flex-1 min-h-[50vh] abnsolute left-[12%] lg:absolute lg:inset-0 lg:left-[5%] lg:right-[35%] z-0 order-1 lg:order-2 hero-image-container"
                     >
                         <img src={heroImg} alt="Dreamer Hero" />
-                        
+
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                             {SLIDES.map((_, i) => (
-                                <div 
-                                    key={i} 
+                                <div
+                                    key={i}
                                     onClick={() => setActiveSlide(i)}
                                     className={`h-[2px] transition-all cursor-pointer ${i === activeSlide ? 'w-8 bg-[#d4c9bc]' : 'w-4 bg-[#d4c9bc]/30'}`}
                                 />
@@ -176,7 +218,7 @@ export default function DreamerHero() {
                     </div>
 
                     {/* Right: Info */}
-                    <div 
+                    <div
                         ref={rightColRef}
                         className="w-full lg:w-[400px] lg:ml-auto p-6 lg:pr-10 lg:pl-0 flex flex-col justify-center gap-8 z-10 order-3 lg:order-3"
                     >

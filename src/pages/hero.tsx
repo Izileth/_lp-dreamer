@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import gsap from "gsap";
 
 const SLIDES = [
@@ -41,27 +40,22 @@ const THUMBNAILS = [
 
 export default function DreamerHero() {
     const [activeSlide, setActiveSlide] = useState(0);
-    const [menuOpen, setMenuOpen] = useState(false);
     
     const containerRef = useRef<HTMLDivElement>(null);
     const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
     const heroImageRef = useRef<HTMLDivElement>(null);
     const rightColRef = useRef<HTMLDivElement>(null);
-    const navRef = useRef<HTMLDivElement>(null);
-    const mobileMenuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Initial animation
+            // Inner content animation
             gsap.set(lettersRef.current, { x: -100, opacity: 0 });
             gsap.set(heroImageRef.current, { scale: 1.1, opacity: 0 });
             gsap.set(rightColRef.current, { x: 50, opacity: 0 });
-            gsap.set(navRef.current, { y: -20, opacity: 0 });
 
-            const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 } });
+            const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.6 });
 
-            tl.to(navRef.current, { y: 0, opacity: 1 })
-              .to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 }, "-=0.5")
+            tl.to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 })
               .to(heroImageRef.current, { scale: 1, opacity: 1 }, "-=0.8")
               .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
         }, containerRef);
@@ -69,37 +63,12 @@ export default function DreamerHero() {
         return () => ctx.revert();
     }, []);
 
-    useEffect(() => {
-        if (menuOpen) {
-            gsap.to(mobileMenuRef.current, { 
-                y: 0, 
-                opacity: 1, 
-                duration: 0.5, 
-                ease: "power3.out",
-                pointerEvents: "all"
-            });
-            document.body.style.overflow = "hidden";
-        } else {
-            gsap.to(mobileMenuRef.current, { 
-                y: "-100%", 
-                opacity: 0, 
-                duration: 0.5, 
-                ease: "power3.in",
-                pointerEvents: "none"
-            });
-            document.body.style.overflow = "auto";
-        }
-    }, [menuOpen]);
-
-    const toggleMenu = () => setMenuOpen(!menuOpen);
-
     return (
         <div
             ref={containerRef}
             className="min-h-screen w-full flex items-center justify-center overflow-x-hidden relative"
             style={{ backgroundColor: "#b5a99a", fontFamily: "'Barlow Condensed', sans-serif" }}
         >
-            {/* Google Fonts Import */}
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap');
 
@@ -112,6 +81,7 @@ export default function DreamerHero() {
                   width: 100%;
                   height: 100%;
                   min-height: 100vh;
+                  padding-top: 80px; /* Space for fixed Navbar */
                 }
 
                 @media (min-width: 1024px) {
@@ -121,18 +91,8 @@ export default function DreamerHero() {
                         width: 100%;
                         max-width: screen;
                         border-radius: 4px;
+                        padding-top: 0;
                     }
-                }
-
-                .vertical-season {
-                  writing-mode: vertical-rl;
-                  text-orientation: mixed;
-                  transform: rotate(180deg);
-                  letter-spacing: 0.25em;
-                  font-size: 0.65rem;
-                  font-weight: 600;
-                  text-transform: uppercase;
-                  color: #1a1a1a;
                 }
 
                 .dreamer-letter {
@@ -145,33 +105,6 @@ export default function DreamerHero() {
                   letter-spacing: -0.02em;
                   display: block;
                   user-select: none;
-                }
-
-                .nav-link {
-                  font-family: 'Barlow Condensed', sans-serif;
-                  font-size: 0.75rem;
-                  font-weight: 700;
-                  letter-spacing: 0.15em;
-                  text-transform: uppercase;
-                  color: #1a1a1a;
-                  cursor: pointer;
-                  transition: all 0.3s ease;
-                  text-decoration: none;
-                }
-                .nav-link:hover { opacity: 0.5; letter-spacing: 0.25em; }
-
-                .mobile-nav-link {
-                    font-size: 3rem;
-                    font-weight: 900;
-                    color: #d4c9bc;
-                    text-decoration: none;
-                    text-transform: uppercase;
-                    line-height: 1;
-                    transition: all 0.3s ease;
-                }
-                .mobile-nav-link:hover {
-                    color: #fff;
-                    transform: translateX(10px);
                 }
 
                 .info-title {
@@ -190,29 +123,6 @@ export default function DreamerHero() {
                   color: #2a2a2a;
                 }
 
-                .menu-btn {
-                  width: 48px;
-                  height: 48px;
-                  background: #0d0d0d;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  gap: 6px;
-                  cursor: pointer;
-                  border: none;
-                  z-index: 100;
-                }
-                .menu-line {
-                  width: 22px;
-                  height: 2px;
-                  background: #d4c9bc;
-                  transition: all 0.3s ease;
-                }
-                .menu-open .menu-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-                .menu-open .menu-line:nth-child(2) { opacity: 0; }
-                .menu-open .menu-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
                 .placeholder-img {
                   background: linear-gradient(135deg, #c5b9ac 0%, #b8ac9f 50%, #c5b9ac 100%);
                   display: flex;
@@ -223,52 +133,9 @@ export default function DreamerHero() {
                 }
             `}</style>
 
-            {/* ── MOBILE MENU OVERLAY ── */}
-            <div 
-                ref={mobileMenuRef}
-                className="fixed inset-0 z-[90] bg-[#0d0d0d] flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none"
-                style={{ transform: "translateY(-100%)" }}
-            >
-                <Link to="/" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>HOME</Link>
-                <Link to="/projects" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>PROJECTS</Link>
-                <Link to="/artists" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>ARTISTS</Link>
-                <div className="flex gap-6 mt-12">
-                    <span className="text-[#d4c9bc] text-xs tracking-widest cursor-pointer hover:opacity-50">INSTAGRAM</span>
-                    <span className="text-[#d4c9bc] text-xs tracking-widest cursor-pointer hover:opacity-50">TWITTER</span>
-                    <span className="text-[#d4c9bc] text-xs tracking-widest cursor-pointer hover:opacity-50">DISCORD</span>
-                </div>
-            </div>
-
             <div className="hero-card">
-                {/* ── TOP NAV ── */}
-                <div ref={navRef} className="flex items-center justify-between p-6 lg:p-10 relative z-[80]">
-                    <div className="flex items-start gap-4">
-                        <Link to="/projects" className="nav-link hidden lg:block mt-1">PROJECTS</Link>
-                        <div className="flex h-24 lg:h-32 items-end">
-                            <span className="vertical-season">SEASON 01</span>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-2">
-                        <Link to="/" className="nav-link text-sm lg:text-base font-black tracking-[0.3em]">DREAMERS</Link>
-                        <div className="hidden lg:flex gap-6">
-                            <span className="nav-link text-[10px]">INDEX</span>
-                            <Link to="/artists" className="nav-link text-[10px]">ARTISTS</Link>
-                        </div>
-                    </div>
-
-                    <button 
-                        className={`menu-btn ${menuOpen ? 'menu-open' : ''}`} 
-                        onClick={toggleMenu}
-                    >
-                        <div className="menu-line" />
-                        <div className="menu-line" />
-                        <div className="menu-line" />
-                    </button>
-                </div>
-
                 {/* ── MAIN CONTENT ── */}
-                <div className="flex-1 flex flex-col lg:flex-row relative lg:mt-[-40px]">
+                <div className="flex-1 flex flex-col lg:flex-row relative lg:mt-[100px]">
                     {/* Left: DREAMER Text */}
                     <div className="flex flex-col justify-end p-6 lg:pl-10 lg:pb-10 relative z-10 order-2 lg:order-1">
                         <div className="flex flex-col">

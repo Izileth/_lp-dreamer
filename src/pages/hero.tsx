@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import heroImg from "../assets/hero.png";
+import SEO from "../components/SEO";
 
 const SLIDES = [
     { id: 1, label: "01" },
@@ -70,6 +71,10 @@ export default function DreamerHero() {
             className="min-h-screen w-full flex items-center justify-center overflow-x-hidden relative"
             style={{ backgroundColor: "#b5a99a", fontFamily: "'Barlow Condensed', sans-serif" }}
         >
+            <SEO 
+                title="Home" 
+                description="Dreamer NFT is the future of digital art. Explore unique NFT collections and visionary artists." 
+            />
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap');
 

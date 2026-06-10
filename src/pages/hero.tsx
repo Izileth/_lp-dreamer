@@ -68,10 +68,10 @@ export default function DreamerHero() {
             const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.6 });
 
             tl.to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 })
-                .to(nftRefs.current, { 
-                    scale: 1, 
-                    opacity: 1, 
-                    y: 0, 
+                .to(nftRefs.current, {
+                    scale: 1,
+                    opacity: 1,
+                    y: 0,
                     stagger: 0.05,
                     duration: 1.2,
                     ease: "back.out(1.2)"
@@ -87,19 +87,21 @@ export default function DreamerHero() {
         nftRefs.current.forEach((ref, i) => {
             if (ref) {
                 if (i === activeSlide) {
-                    gsap.to(ref, { 
-                        scale: 1.1, 
-                        zIndex: 50, 
-                        filter: "grayscale(0%) contrast(1.1)",
-                        duration: 0.6,
+                    gsap.to(ref, {
+                        scale: 1.1,
+                        zIndex: 50,
+                        filter: "blur(0px) grayscale(0%) contrast(1.1)",
+                        opacity: 1,
+                        duration: 0.8,
                         ease: "power2.out"
                     });
                 } else {
-                    gsap.to(ref, { 
-                        scale: 1, 
-                        zIndex: SLIDES[i].z, 
-                        filter: "grayscale(0.6) contrast(1)",
-                        duration: 0.6,
+                    gsap.to(ref, {
+                        scale: 1,
+                        zIndex: SLIDES[i].z,
+                        filter: "blur(6px) grayscale(0.8) contrast(0.9)",
+                        opacity: 0.4,
+                        duration: 0.8,
                         ease: "power2.out"
                     });
                 }
@@ -113,9 +115,9 @@ export default function DreamerHero() {
             className="min-h-screen w-full flex items-center justify-center overflow-x-hidden relative"
             style={{ backgroundColor: "#b5a99a", fontFamily: "'Barlow Condensed', sans-serif" }}
         >
-            <SEO 
-                title="Home" 
-                description="Dreamer NFT is the future of digital art. Explore unique NFT collections and visionary artists." 
+            <SEO
+                title="Home"
+                description="Dreamer NFT is the future of digital art. Explore unique NFT collections and visionary artists."
             />
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap');
@@ -187,6 +189,7 @@ export default function DreamerHero() {
                   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
                   transition: filter 0.5s ease;
                   overflow: hidden;
+                  border-radius: 12px;
                 }
 
                 .nft-card img {
@@ -259,7 +262,7 @@ export default function DreamerHero() {
                         {SLIDES.map((slide, i) => (
                             <div
                                 key={slide.id}
-                                ref={el => nftRefs.current[i] = el}
+                                ref={el => { nftRefs.current[i] = el; }}
                                 className="nft-card cursor-pointer"
                                 style={{
                                     top: slide.top,

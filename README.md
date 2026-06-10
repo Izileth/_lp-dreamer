@@ -1,75 +1,66 @@
-# React + TypeScript + Vite
+# DM | Dreamer NFT
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-end, immersive digital art gallery and NFT marketplace prototype. **Dreamer NFT** focuses on a brutalist, minimalist aesthetic with high-performance animations and a unique visual identity.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Dynamic NFT Grid (Hero):** A scattered, depth-of-field visual experience that showcases project diversity with cinematic focus and interactive highlighting.
+- **GSAP Immersive Animations:** Fluid, high-performance transitions and entry sequences using GSAP (GreenSock Animation Platform).
+- **Curated Collections:** Dedicated pages for latest projects and visionary artists with integrated NFT asset management.
+- **Brutalist Design System:** A focused palette and typography (Barlow Condensed) that prioritizes digital art and minimalist UI.
+- **SEO Optimized:** Fully integrated SEO components for better discoverability.
+- **Responsive & Performant:** Built with Vite and TypeScript for lightning-fast development and optimized production builds.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Frontend:** React 18 + TypeScript
+- **Styling:** Tailwind CSS + Vanilla CSS (for custom brutalist effects)
+- **Animations:** GSAP
+- **Routing:** React Router DOM
+- **Meta Tags:** React Helmet Async
+- **Build Tool:** Vite
 
-Note: This will impact Vite dev & build performances.
+## 📦 Project Structure
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+├── assets/           # NFT collection and static images
+├── components/       # Shared UI components (Navbar, SEO, etc.)
+└── pages/            # Core application views
+    ├── hero.tsx      # Interactive NFT grid landing page
+    ├── Projects.tsx  # Collection showcase
+    └── Artists.tsx   # Creator profiles
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
+- Node.js (Latest LTS recommended)
+- npm or yarn
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🎨 Visual Identity
+
+The project uses a sophisticated earthy palette:
+- **Background:** `#b5a99a` / `#d4c9bc`
+- **Contrast:** `#0d0d0d` (Black)
+- **Typography:** Barlow Condensed (900 weight for headers)
+
+---
+*Dreamer NFT - The future of digital art.*

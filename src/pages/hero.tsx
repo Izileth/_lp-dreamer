@@ -1,17 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import heroImg from "../assets/hero.png";
 import SEO from "../components/SEO";
 
+// NFT Assets
+import token1 from "../assets/nfts/Token.jpg";
+import token2 from "../assets/nfts/Token2.jpg";
+import token3 from "../assets/nfts/Token3.jpg";
+import token4 from "../assets/nfts/Token4.jpg";
+import token5 from "../assets/nfts/Token5.jpg";
+import token6 from "../assets/nfts/Token6.jpg";
+import token7 from "../assets/nfts/Token7.jpg";
+import token10 from "../assets/nfts/Token10.jpg";
+
 const SLIDES = [
-    { id: 1, label: "01" },
-    { id: 2, label: "02" },
-    { id: 3, label: "03" },
-    { id: 4, label: "04" },
-    { id: 5, label: "05" },
-    { id: 6, label: "06" },
-    { id: 7, label: "07" },
-    { id: 8, label: "08" },
+    { id: 1, label: "01", img: token1 },
+    { id: 2, label: "02", img: token2 },
+    { id: 3, label: "03", img: token3 },
+    { id: 4, label: "04", img: token4 },
+    { id: 5, label: "05", img: token5 },
+    { id: 6, label: "06", img: token6 },
+    { id: 7, label: "07", img: token7 },
+    { id: 8, label: "08", img: token10 },
 ];
 
 const INFO_CARDS = [
@@ -36,8 +45,8 @@ const INFO_CARDS = [
 ];
 
 const THUMBNAILS = [
-    { id: 1, bg: "bg-[#c8c8c8]", accent: "" },
-    { id: 2, bg: "bg-[#e8e000]", accent: "" },
+    { id: 1, img: token6 },
+    { id: 2, img: token7 },
 ];
 
 export default function DreamerHero() {
@@ -64,6 +73,16 @@ export default function DreamerHero() {
 
         return () => ctx.revert();
     }, []);
+
+    // Animation when slide changes
+    useEffect(() => {
+        if (heroImageRef.current) {
+            gsap.fromTo(heroImageRef.current.querySelector("img"), 
+                { opacity: 0, scale: 1.1 },
+                { opacity: 0.9, scale: 1, duration: 1, ease: "power2.out" }
+            );
+        }
+    }, [activeSlide]);
 
     return (
         <div
@@ -209,7 +228,7 @@ export default function DreamerHero() {
                         ref={heroImageRef}
                         className="flex-1 min-h-[50vh] abnsolute left-[12%] lg:absolute lg:inset-0 lg:left-[5%] lg:right-[35%] z-0 order-1 lg:order-2 hero-image-container"
                     >
-                        <img src={heroImg} alt="Dreamer Hero" />
+                        <img src={SLIDES[activeSlide].img} alt="Dreamer Hero" />
 
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                             {SLIDES.map((_, i) => (
@@ -247,7 +266,7 @@ export default function DreamerHero() {
                         <div className="flex gap-2 h-20">
                             {THUMBNAILS.map((t) => (
                                 <div key={t.id} className={`flex-1 overflow-hidden cursor-pointer hover:brightness-95 transition-all bg-black`}>
-                                    <img src={heroImg} className="w-full h-full object-cover grayscale opacity-60" alt="thumbnail" />
+                                    <img src={t.img} className="w-full h-full object-cover grayscale opacity-60" alt="thumbnail" />
                                 </div>
                             ))}
                         </div>

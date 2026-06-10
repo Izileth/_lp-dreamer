@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import SEO from "../components/SEO";
 
+// NFT Assets
+import token1 from "../assets/nfts/Token.jpg";
+import token2 from "../assets/nfts/Token2.jpg";
+import token3 from "../assets/nfts/Token3.jpg";
+import token4 from "../assets/nfts/Token4.jpg";
+
 const PROJECTS = [
-  { id: "01", name: "GENESIS VOID", floor: "2.4 ETH", status: "MINTING", type: "3D GENERATIVE" },
-  { id: "02", name: "CHRONO SHIFT", floor: "1.8 ETH", status: "SOLD OUT", type: "MOTION ART" },
-  { id: "03", name: "NEO DREAMS", floor: "3.1 ETH", status: "UPCOMING", type: "AI COLLABORATION" },
-  { id: "04", name: "ETHER SOUL", floor: "0.9 ETH", status: "MINTING", type: "DIGITAL SCULPTURE" },
+  { id: "01", name: "GENESIS VOID", floor: "2.4 ETH", status: "MINTING", type: "3D GENERATIVE", img: token1 },
+  { id: "02", name: "CHRONO SHIFT", floor: "1.8 ETH", status: "SOLD OUT", type: "MOTION ART", img: token2 },
+  { id: "03", name: "NEO DREAMS", floor: "3.1 ETH", status: "UPCOMING", type: "AI COLLABORATION", img: token3 },
+  { id: "04", name: "ETHER SOUL", floor: "0.9 ETH", status: "MINTING", type: "DIGITAL SCULPTURE", img: token4 },
 ]
 
 export default function Projects() {
@@ -53,11 +59,29 @@ export default function Projects() {
           background-color: #d4c9bc;
           border: 1px solid rgba(0,0,0,0.1);
           transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
         }
 
         .project-card:hover {
           background-color: #0d0d0d;
           color: #d4c9bc;
+        }
+
+        .project-card img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.4;
+          transition: transform 0.6s ease, opacity 0.3s ease;
+          filter: grayscale(100%);
+        }
+
+        .project-card:hover img {
+          transform: scale(1.1);
+          opacity: 0.2;
         }
 
         .dot-grid {
@@ -86,14 +110,16 @@ export default function Projects() {
             ref={el => { cardsRef.current[i] = el; }}
             className="project-card p-6 flex flex-col justify-between aspect-[3/4]"
           >
-            <div className="flex justify-between items-start">
+            <img src={project.img} alt={project.name} />
+            
+            <div className="flex justify-between items-start relative z-10">
               <span className="text-4xl font-black italic">{project.id}</span>
               <div className="dot-grid">
                 {[...Array(4)].map((_, j) => <div key={j} className="dot" />)}
               </div>
             </div>
 
-            <div>
+            <div className="relative z-10">
               <p className="text-[10px] uppercase tracking-tighter opacity-60 mb-1">{project.type}</p>
               <h2 className="text-2xl font-bold leading-none mb-6">{project.name}</h2>
               

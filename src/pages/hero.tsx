@@ -13,14 +13,14 @@ import token7 from "../assets/nfts/Token7.jpg";
 import token10 from "../assets/nfts/Token10.jpg";
 
 const SLIDES = [
-    { id: 1, label: "01", img: token1 },
-    { id: 2, label: "02", img: token2 },
-    { id: 3, label: "03", img: token3 },
-    { id: 4, label: "04", img: token4 },
-    { id: 5, label: "05", img: token5 },
-    { id: 6, label: "06", img: token6 },
-    { id: 7, label: "07", img: token7 },
-    { id: 8, label: "08", img: token10 },
+    { id: 1, label: "01", img: token1, top: '10%', left: '5%', width: '35%', rotate: -5, z: 10 },
+    { id: 2, label: "02", img: token2, top: '45%', left: '12%', width: '30%', rotate: 8, z: 20 },
+    { id: 3, label: "03", img: token3, top: '5%', left: '42%', width: '38%', rotate: -2, z: 5 },
+    { id: 4, label: "04", img: token4, top: '55%', left: '45%', width: '32%', rotate: 12, z: 15 },
+    { id: 5, label: "05", img: token5, top: '25%', left: '72%', width: '28%', rotate: -10, z: 12 },
+    { id: 6, label: "06", img: token6, top: '68%', left: '8%', width: '24%', rotate: 5, z: 18 },
+    { id: 7, label: "07", img: token7, top: '78%', left: '65%', width: '35%', rotate: -3, z: 8 },
+    { id: 8, label: "08", img: token10, top: '18%', left: '30%', width: '32%', rotate: 15, z: 22 },
 ];
 
 const INFO_CARDS = [
@@ -55,33 +55,56 @@ export default function DreamerHero() {
     const containerRef = useRef<HTMLDivElement>(null);
     const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
     const heroImageRef = useRef<HTMLDivElement>(null);
+    const nftRefs = useRef<(HTMLDivElement | null)[]>([]);
     const rightColRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             // Inner content animation
             gsap.set(lettersRef.current, { x: -100, opacity: 0 });
-            gsap.set(heroImageRef.current, { scale: 1.1, opacity: 0 });
+            gsap.set(nftRefs.current, { scale: 1.2, opacity: 0, y: 50 });
             gsap.set(rightColRef.current, { x: 50, opacity: 0 });
 
             const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.6 });
 
             tl.to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 })
-                .to(heroImageRef.current, { scale: 1, opacity: 1 }, "-=0.8")
+                .to(nftRefs.current, { 
+                    scale: 1, 
+                    opacity: 1, 
+                    y: 0, 
+                    stagger: 0.05,
+                    duration: 1.2,
+                    ease: "back.out(1.2)"
+                }, "-=0.8")
                 .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
         }, containerRef);
 
         return () => ctx.revert();
     }, []);
 
-    // Animation when slide changes
+    // Highlight active slide's NFT
     useEffect(() => {
-        if (heroImageRef.current) {
-            gsap.fromTo(heroImageRef.current.querySelector("img"), 
-                { opacity: 0, scale: 1.1 },
-                { opacity: 0.9, scale: 1, duration: 1, ease: "power2.out" }
-            );
-        }
+        nftRefs.current.forEach((ref, i) => {
+            if (ref) {
+                if (i === activeSlide) {
+                    gsap.to(ref, { 
+                        scale: 1.1, 
+                        zIndex: 50, 
+                        filter: "grayscale(0%) contrast(1.1)",
+                        duration: 0.6,
+                        ease: "power2.out"
+                    });
+                } else {
+                    gsap.to(ref, { 
+                        scale: 1, 
+                        zIndex: SLIDES[i].z, 
+                        filter: "grayscale(0.6) contrast(1)",
+                        duration: 0.6,
+                        ease: "power2.out"
+                    });
+                }
+            }
+        });
     }, [activeSlide]);
 
     return (
@@ -131,7 +154,7 @@ export default function DreamerHero() {
                   display: block;
                   user-select: none;
                   position: relative;
-                  z-index: 20;
+                  z-index: 60;
                   text-shadow: 0 0 20px rgba(212, 201, 188, 0.5);
                 }
 
@@ -155,16 +178,21 @@ export default function DreamerHero() {
                   position: relative;
                   overflow: hidden;
                   background: transparent;
-                  transition: all 0.5s ease;
                 }
                 
-                .hero-image-container img {
+                .nft-card {
+                  position: absolute;
+                  background: #000;
+                  border: 1px solid rgba(255,255,255,0.1);
+                  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                  transition: filter 0.5s ease;
+                  overflow: hidden;
+                }
+
+                .nft-card img {
                   width: 100%;
                   height: 100%;
                   object-fit: cover;
-                  object-position: center 15%;
-                  filter: grayscale(0.2) contrast(1.1);
-                  opacity: 0.9;
                 }
 
                 @media (max-width: 1023px) {
@@ -173,7 +201,7 @@ export default function DreamerHero() {
                         bottom: 0;
                         left: 0;
                         padding: 1.5rem;
-                        z-index: 30;
+                        z-index: 70;
                         pointer-events: none;
                     }
                     .hero-image-container {
@@ -190,7 +218,7 @@ export default function DreamerHero() {
                     {/* Left: DREAMER Text */}
                     <div
                         className="
-        absolute top-4 left-4 z-30
+        absolute top-4 left-4 z-70
         flex flex-col
         md:relative md:top-auto md:left-auto
         md:justify-end
@@ -223,14 +251,30 @@ export default function DreamerHero() {
                         </div>
                     </div>
 
-                    {/* Center: Image (Redimensionada para destaque do texto) */}
+                    {/* Center: Random Dispersion NFT Grid */}
                     <div
                         ref={heroImageRef}
-                        className="flex-1 min-h-[50vh] abnsolute left-[12%] lg:absolute lg:inset-0 lg:left-[5%] lg:right-[35%] z-0 order-1 lg:order-2 hero-image-container"
+                        className="flex-1 min-h-[50vh] relative lg:absolute lg:inset-0 lg:left-[5%] lg:right-[35%] z-0 order-1 lg:order-2 hero-image-container"
                     >
-                        <img src={SLIDES[activeSlide].img} alt="Dreamer Hero" />
+                        {SLIDES.map((slide, i) => (
+                            <div
+                                key={slide.id}
+                                ref={el => nftRefs.current[i] = el}
+                                className="nft-card cursor-pointer"
+                                style={{
+                                    top: slide.top,
+                                    left: slide.left,
+                                    width: slide.width,
+                                    zIndex: slide.z,
+                                    transform: `rotate(${slide.rotate}deg)`,
+                                }}
+                                onClick={() => setActiveSlide(i)}
+                            >
+                                <img src={slide.img} alt={`NFT ${slide.id}`} />
+                            </div>
+                        ))}
 
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-[100]">
                             {SLIDES.map((_, i) => (
                                 <div
                                     key={i}

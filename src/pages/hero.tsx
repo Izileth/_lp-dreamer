@@ -3,6 +3,7 @@ import gsap from "gsap";
 import SEO from "../components/SEO";
 
 // NFT Assets
+import heroImage from "../assets/hero.PNG";
 import token1 from "../assets/nfts/Token.jpg";
 import token2 from "../assets/nfts/Token2.jpg";
 import token3 from "../assets/nfts/Token3.jpg";
@@ -116,8 +117,9 @@ export default function DreamerHero() {
             style={{ backgroundColor: "#b5a99a", fontFamily: "'Barlow Condensed', sans-serif" }}
         >
             <SEO
-                title="Home"
-                description="Dreamer NFT is the future of digital art. Explore unique NFT collections and visionary artists."
+                title="The Future of Digital Art"
+                description="Explore and collect unique digital art on Dreamer NFT. A curated marketplace for visionary artists and collectors in the Web3 space."
+                ogImage={heroImage}
             />
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap');

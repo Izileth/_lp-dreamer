@@ -59,8 +59,9 @@ export default function Artists() {
       style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
     >
       <SEO 
-        title="Artists" 
-        description="Meet the visionary artists behind Dreamer NFT. A curated selection of digital creators." 
+        title="Visionary Artists" 
+        description="Meet the world-class digital creators and collectives behind the Dreamer NFT ecosystem. Exploring the boundaries of art and technology." 
+        ogImage={token5}
       />
 
       <style>{`

@@ -40,8 +40,9 @@ export default function Projects() {
       style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
     >
       <SEO 
-        title="Projects" 
-        description="View our latest NFT projects and digital art collections on Dreamer NFT." 
+        title="Exclusive NFT Collections" 
+        description="Discover the latest curated NFT projects on Dreamer NFT. From 3D generative art to AI collaborations, explore the cutting edge of digital creativity." 
+        ogImage={token3}
       />
       
       <style>{`

@@ -3,7 +3,7 @@ import gsap from "gsap";
 import SEO from "../components/SEO";
 
 // NFT Assets
-import heroImage from "../assets/hero.PNG";
+import heroImage from "../assets/nfts/Token4.jpg";
 import token1 from "../assets/nfts/Token.jpg";
 import token2 from "../assets/nfts/Token2.jpg";
 import token3 from "../assets/nfts/Token3.jpg";

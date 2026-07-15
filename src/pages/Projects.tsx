@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
-import SEO from "../components/SEO";
+import { useGSAP } from '@gsap/react'
+import SEO from "../components/layout/SEO";
 
 // NFT Assets
 import token1 from "../assets/nfts/Token.jpg";
@@ -14,24 +15,21 @@ const PROJECTS = [
   { id: "02", name: "CHRONO SHIFT", floor: "1.8 ETH", status: "SOLD OUT", type: "MOTION ART", img: token2 },
   { id: "03", name: "NEO DREAMS", floor: "3.1 ETH", status: "UPCOMING", type: "AI COLLABORATION", img: token3 },
   { id: "04", name: "ETHER SOUL", floor: "0.9 ETH", status: "MINTING", type: "DIGITAL SCULPTURE", img: token4 },
-]
+ ]
 
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(titleRef.current, { y: 50, opacity: 0 });
-      gsap.set(cardsRef.current, { y: 30, opacity: 0 });
+  useGSAP(() => {
+    gsap.set(titleRef.current, { y: 50, opacity: 0 });
+    gsap.set(cardsRef.current, { y: 30, opacity: 0 });
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.2 });
-      tl.to(titleRef.current, { y: 0, opacity: 1 })
-        .to(cardsRef.current, { y: 0, opacity: 1, stagger: 0.1 }, "-=0.6");
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
+    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.2 });
+    tl.to(titleRef.current, { y: 0, opacity: 1 })
+      .to(cardsRef.current, { y: 0, opacity: 1, stagger: 0.1 }, "-=0.6");
+  }, { scope: containerRef });
 
   return (
     <div 

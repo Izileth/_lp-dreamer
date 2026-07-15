@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
     const location = useLocation();
     const overlayRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    useGSAP(() => {
         // Simple overlay transition
         const tl = gsap.timeline();
 
@@ -33,7 +34,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
             { opacity: 1, y: 0, duration: 0.8, delay: 0.4, ease: "power3.out" }
         );
 
-    }, [location.pathname]);
+    }, { dependencies: [location.pathname] });
 
     return (
         <div className="relative w-full min-h-screen">

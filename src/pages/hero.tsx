@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import gsap from "gsap";
-import SEO from "../components/SEO";
+import { useGSAP } from "@gsap/react";
+import SEO from "../components/layout/SEO";
 
 // NFT Assets
 import heroImage from "../assets/nfts/Token4.jpg";
@@ -59,32 +60,28 @@ export default function DreamerHero() {
     const nftRefs = useRef<(HTMLDivElement | null)[]>([]);
     const rightColRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // Inner content animation
-            gsap.set(lettersRef.current, { x: -100, opacity: 0 });
-            gsap.set(nftRefs.current, { scale: 1.2, opacity: 0, y: 50 });
-            gsap.set(rightColRef.current, { x: 50, opacity: 0 });
+    useGSAP(() => {
+        // Inner content animation
+        gsap.set(lettersRef.current, { x: -100, opacity: 0 });
+        gsap.set(nftRefs.current, { scale: 1.2, opacity: 0, y: 50 });
+        gsap.set(rightColRef.current, { x: 50, opacity: 0 });
 
-            const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.6 });
+        const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.6 });
 
-            tl.to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 })
-                .to(nftRefs.current, {
-                    scale: 1,
-                    opacity: 1,
-                    y: 0,
-                    stagger: 0.05,
-                    duration: 1.2,
-                    ease: "back.out(1.2)"
-                }, "-=0.8")
-                .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
-        }, containerRef);
-
-        return () => ctx.revert();
-    }, []);
+        tl.to(lettersRef.current, { x: 0, opacity: 1, stagger: 0.1 })
+            .to(nftRefs.current, {
+                scale: 1,
+                opacity: 1,
+                y: 0,
+                stagger: 0.05,
+                duration: 1.2,
+                ease: "back.out(1.2)"
+            }, "-=0.8")
+            .to(rightColRef.current, { x: 0, opacity: 1 }, "-=0.8");
+    }, { scope: containerRef });
 
     // Highlight active slide's NFT
-    useEffect(() => {
+    useGSAP(() => {
         nftRefs.current.forEach((ref, i) => {
             if (ref) {
                 if (i === activeSlide) {
@@ -108,7 +105,7 @@ export default function DreamerHero() {
                 }
             }
         });
-    }, [activeSlide]);
+    }, { dependencies: [activeSlide], scope: containerRef });
 
     return (
         <div

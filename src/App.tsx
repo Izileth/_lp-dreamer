@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import DreamerHero from './pages/hero'
 import Projects from './pages/Projects'
 import Artists from './pages/Artists'
-import Navbar from './components/Navbar'
-import PageTransition from './components/PageTransition'
+import Navbar from './components/layout/Navbar'
+import PageTransition from './components/layout/PageTransition'
 
 
 function App() {

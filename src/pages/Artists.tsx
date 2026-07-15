@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
-import SEO from "../components/SEO";
+import { useGSAP } from '@gsap/react'
+import SEO from "../components/layout/SEO";
 
 // NFT Assets
 import token5 from "../assets/nfts/Token5.jpg";
@@ -40,17 +41,14 @@ export default function Artists() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const listRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(titleRef.current, { x: -50, opacity: 0 });
-      gsap.set(listRef.current, { x: 30, opacity: 0 });
+  useGSAP(() => {
+    gsap.set(titleRef.current, { x: -50, opacity: 0 });
+    gsap.set(listRef.current, { x: 30, opacity: 0 });
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.2 });
-      tl.to(titleRef.current, { x: 0, opacity: 1 })
-        .to(listRef.current, { x: 0, opacity: 1, stagger: 0.15 }, "-=0.6");
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
+    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.2 });
+    tl.to(titleRef.current, { x: 0, opacity: 1 })
+      .to(listRef.current, { x: 0, opacity: 1, stagger: 0.15 }, "-=0.6");
+  }, { scope: containerRef });
 
   return (
     <div 

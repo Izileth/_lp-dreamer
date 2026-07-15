@@ -1,35 +1,19 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import SEO from "../components/layout/SEO";
-
-// NFT Assets
-import token1 from "../assets/nfts/Token.jpg";
-import token2 from "../assets/nfts/Token2.jpg";
-import token3 from "../assets/nfts/Token3.jpg";
-import token4 from "../assets/nfts/Token4.jpg";
-
-const PROJECTS = [
-  { id: "01", name: "GENESIS VOID", floor: "2.4 ETH", status: "MINTING", type: "3D GENERATIVE", img: token1 },
-  { id: "02", name: "CHRONO SHIFT", floor: "1.8 ETH", status: "SOLD OUT", type: "MOTION ART", img: token2 },
-  { id: "03", name: "NEO DREAMS", floor: "3.1 ETH", status: "UPCOMING", type: "AI COLLABORATION", img: token3 },
-  { id: "04", name: "ETHER SOUL", floor: "0.9 ETH", status: "MINTING", type: "DIGITAL SCULPTURE", img: token4 },
- ]
+import { useProjectsAnimations } from "../hooks/useProjectsAnimations";
+import { PROJECTS } from "../utils/constants";
 
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useGSAP(() => {
-    gsap.set(titleRef.current, { y: 50, opacity: 0 });
-    gsap.set(cardsRef.current, { y: 30, opacity: 0 });
-
-    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.2 });
-    tl.to(titleRef.current, { y: 0, opacity: 1 })
-      .to(cardsRef.current, { y: 0, opacity: 1, stagger: 0.1 }, "-=0.6");
-  }, { scope: containerRef });
+  useProjectsAnimations({
+    containerRef,
+    titleRef,
+    cardsRef,
+  });
 
   return (
     <div 
@@ -40,7 +24,7 @@ export default function Projects() {
       <SEO 
         title="Exclusive NFT Collections" 
         description="Discover the latest curated NFT projects on Dreamer NFT. From 3D generative art to AI collaborations, explore the cutting edge of digital creativity." 
-        ogImage={token3}
+        ogImage={PROJECTS[2].img}
       />
       
       <style>{`

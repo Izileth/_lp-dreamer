@@ -1,54 +1,19 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import SEO from "../components/layout/SEO";
-
-// NFT Assets
-import token5 from "../assets/nfts/Token5.jpg";
-import token6 from "../assets/nfts/Token6.jpg";
-import token7 from "../assets/nfts/Token7.jpg";
-
-const ARTISTS = [
-  { 
-    name: "YUGAL ODHRANI", 
-    role: "LEAD ARCHITECT", 
-    bio: "Visionary creator specializing in generative systems and brutalist digital structures.",
-    collections: "12",
-    since: "2021",
-    img: token5
-  },
-  { 
-    name: "DREAMER LABS", 
-    role: "COLLECTIVE", 
-    bio: "A decentralized group of artists pushing the boundaries of Web3 immersive art.",
-    collections: "05",
-    since: "2022",
-    img: token6
-  },
-  { 
-    name: "X-CELL", 
-    role: "MOTION DESIGNER", 
-    bio: "Exploring the intersection of fluid dynamics and blockchain temporality.",
-    collections: "08",
-    since: "2020",
-    img: token7
-  }
-]
+import { useArtistsAnimations } from "../hooks/useArtistsAnimations";
+import { ARTISTS } from "../utils/constants";
 
 export default function Artists() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const listRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useGSAP(() => {
-    gsap.set(titleRef.current, { x: -50, opacity: 0 });
-    gsap.set(listRef.current, { x: 30, opacity: 0 });
-
-    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 }, delay: 0.2 });
-    tl.to(titleRef.current, { x: 0, opacity: 1 })
-      .to(listRef.current, { x: 0, opacity: 1, stagger: 0.15 }, "-=0.6");
-  }, { scope: containerRef });
+  useArtistsAnimations({
+    containerRef,
+    titleRef,
+    listRef,
+  });
 
   return (
     <div 
@@ -59,7 +24,7 @@ export default function Artists() {
       <SEO 
         title="Visionary Artists" 
         description="Meet the world-class digital creators and collectives behind the Dreamer NFT ecosystem. Exploring the boundaries of art and technology." 
-        ogImage={token5}
+        ogImage={ARTISTS[0].img}
       />
 
       <style>{`
